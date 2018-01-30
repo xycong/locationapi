@@ -1,16 +1,14 @@
-from django.test import TestCase
+from rest_framework.test import APITestCase
+from rest_framework import status
 from .models import Location
+from .serializers import LocationSerializer
 
 # Create your tests here.
 
 
-class ModelTestCase(TestCase):
-    def setUp(self):
-        self.location_name = "Loblaws"
-        self.location = Location(name=self.location_name)
-
-    def test_model_can_create_a_location(self):
-        old_count = Location.objects.count()
-        self.location.save()
-        new_count = Location.objects.count()
-        self.assertNotEqual(old_count, new_count)
+class LocationListViewTestCase(APITestCase):
+    def test_location_get(self):
+        response = self.client.get(
+            '/locations?category=restaurant&coords=43.895776,-79.464448&count=2&radius=10000'
+        )
+        self.assertTrue(status.is_success(response.status_code))
