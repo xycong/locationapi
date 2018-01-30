@@ -1,9 +1,10 @@
-from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
-from .views import CreateView
+from django.urls import re_path
+from . import views
 
-urlpatterns = {
-    url(r'^locations/$', CreateView.as_view(), name="create"),
-}
+app_name = 'locations'
+urlpatterns = [
+    re_path(r'^locations/(?P<category>\w+)/', views.LocationList.as_view(), name="index"),
+]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
